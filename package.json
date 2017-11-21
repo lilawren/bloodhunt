@@ -1,0 +1,11 @@
+{
+  "name": "bloodhunt",
+  "version": "1.0.0",
+  "description": "League of Legends game statistics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lawrence Li",
+  "license": "ISC"
+}
