@@ -3,25 +3,20 @@ import React from 'react'
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            clickCount : 0
-        }
-        this.onButtonClick = this.onButtonClick.bind(this);
     }
 
     render() {
         return (
             <div>
-                What's good? # {this.state.clickCount}
-                <button onClick={this.onButtonClick}>BUMP</button>
-            </div>                
+                <h2>View Live Game Info:</h2>
+                <input placeholder='Search player in game...' />
+                <button>Search</button>
+                <hr/>
+                <h2>Get user info</h2>
+                <input placeholder='Summoner name...' />
+                <button>Search</button>
+            </div>
         );
-    }
-
-    onButtonClick() {
-        this.setState((prevState) => ({
-            clickCount : prevState.clickCount + 1
-        }));    
     }
 }
 

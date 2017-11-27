@@ -13,10 +13,9 @@ var app = express()
 // Serve files in build
 app.use(express.static(DIST_DIR));
 
-app.get('/', function (req, res) {
+app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 })
-
 
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
