@@ -21,7 +21,7 @@ class App extends React.Component {
                     <hr />
 
                     <Route exact path="/" component={Home} />
-                    <Route exact path="/user" component={UserInfo} />
+                    <Route path="/user/:name" component={UserInfo} />
                 </div>
             </Router>
         );

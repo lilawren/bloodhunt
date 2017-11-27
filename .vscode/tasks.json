@@ -11,6 +11,15 @@
                 "cwd": "${workspaceFolder}/app"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "server start",
+            "type": "shell",
+            "command": "npm start",
+            "options": {
+                "cwd": "${workspaceFolder}/app"
+            },
+            "problemMatcher": []
         }
     ]
 }

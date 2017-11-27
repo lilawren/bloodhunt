@@ -13,16 +13,13 @@ var app = express()
 // Serve files in build
 app.use(express.static(DIST_DIR));
 
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-})
+
 
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
 // RIOT api
-// /api/user?name=lali
-app.get('/api/user', function (req, res) {
-    const name = req.query.name;
+app.get('/api/user/:name', function (req, res) {
+    const name = req.params.name;
     if (name == null || name.length == 0) {
         res.end();
         return;
@@ -37,8 +34,12 @@ app.get('/api/user', function (req, res) {
             return;
         }
         console.log('statusCode:', response && response.statusCode);
-        res.send(body)
+        res.json(JSON.parse(body));
     });
+})
+
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../client/index.html'));
 })
 
 var server = app.listen(PORT, function (error) {
