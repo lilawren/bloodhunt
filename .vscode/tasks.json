@@ -20,6 +20,15 @@
                 "cwd": "${workspaceFolder}/app"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "server test",
+            "type": "shell",
+            "command": "mocha",
+            "options": {
+                "cwd": "${workspaceFolder}/app"
+            },
+            "problemMatcher": []
         }
     ]
 }

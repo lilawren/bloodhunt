@@ -13,8 +13,6 @@ var app = express()
 // Serve files in build
 app.use(express.static(DIST_DIR));
 
-
-
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
 // RIOT api
@@ -26,6 +24,8 @@ app.get('/api/user/:name', function (req, res) {
     }
 
     var apiReq = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + name + '?api_key=' + RIOT_API_KEY;
+
+    console.log('api_key: ' + RIOT_API_KEY);
 
     request(apiReq, function (error, response, body) {
         if (error) {
@@ -49,3 +49,4 @@ var server = app.listen(PORT, function (error) {
     console.log('Listening on port ' + PORT);
 })
 
+module.exports = server;
