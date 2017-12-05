@@ -8,6 +8,7 @@ import {
 
 import Home from './Home.jsx'
 import UserInfo from './UserInfo.jsx'
+import GameInfo from './GameInfo.jsx'
 
 class App extends React.Component {
     render() {
@@ -22,6 +23,7 @@ class App extends React.Component {
 
                     <Route exact path="/" component={Home} />
                     <Route path="/user/:name" component={UserInfo} />
+                    <Route path="/live/:name" component={GameInfo} />
                 </div>
             </Router>
         );

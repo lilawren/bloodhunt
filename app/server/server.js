@@ -38,6 +38,7 @@ app.get('/api/user/:name', function (req, res) {
     });
 })
 
+// React Router redirect
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 })
