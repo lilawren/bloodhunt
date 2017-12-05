@@ -8,7 +8,7 @@ import {
 
 import Home from './Home.jsx'
 import UserInfo from './UserInfo.jsx'
-import GameInfo from './GameInfo.jsx'
+import GameInfo from './livegame/GameInfo.jsx'
 
 class App extends React.Component {
     render() {

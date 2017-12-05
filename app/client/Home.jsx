@@ -32,7 +32,7 @@ class Home extends React.Component {
                 <input
                     value={this.state.username}
                     placeholder='Summoner name...'
-                    onChange={ (e) => {this.setState({userName: e.target.value})} }/>
+                    onChange={ (e) => {this.setState({username: e.target.value})} }/>
 
                 <Route render={({history}) => (
                     <button onClick={() => { history.push('/user/' + this.state.username) }}>

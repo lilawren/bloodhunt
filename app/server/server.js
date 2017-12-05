@@ -2,7 +2,7 @@ require('dotenv').config();
 
 var express = require('express')
 var path = require('path')
-var request = require('request');
+var utils = require('./utils.js');
 
 var DIST_DIR = path.join(__dirname, '../client/build');
 var PORT = 8000;
@@ -16,26 +16,26 @@ app.use(express.static(DIST_DIR));
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
 // RIOT api
-app.get('/api/user/:name', function (req, res) {
-    const name = req.params.name;
-    if (name == null || name.length == 0) {
+// user info
+app.get('/api/user/:name', (req, res) => {
+    const name = utils.getParam(req, 'name');
+    if (!name) {
         res.end();
         return;
     }
-
     var apiReq = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + name + '?api_key=' + RIOT_API_KEY;
+    utils.handleAPIRequest(apiReq, res);
+})
 
-    console.log('api_key: ' + RIOT_API_KEY);
-
-    request(apiReq, function (error, response, body) {
-        if (error) {
-            console.log('error:', error);
-            res.end();
-            return;
-        }
-        console.log('statusCode:', response && response.statusCode);
-        res.json(JSON.parse(body));
-    });
+// game info
+app.get('/api/live/:id', (req, res) => {
+    const id = utils.getParam(req, 'id');
+    if (!id) {
+        res.end();
+        return;
+    }
+    var apiReq = 'https://na1.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' + id + '?api_key=' + RIOT_API_KEY;
+    utils.handleAPIRequest(apiReq, res);
 })
 
 // React Router redirect
