@@ -24503,7 +24503,7 @@ var TeamList = function (_React$Component) {
                     this.side
                 ),
                 this.participants.map(function (player) {
-                    return _react2.default.createElement(_PlayerInfo2.default, { key: player.summonerName, name: player.summonerName, isSelf: player.summonerName == _this2.username });
+                    return _react2.default.createElement(_PlayerInfo2.default, { key: player.summonerName, name: player.summonerName, isSelf: player.summonerName.toLowerCase() == _this2.username.toLowerCase() });
                 })
             );
         }

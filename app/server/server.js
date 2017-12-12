@@ -55,6 +55,13 @@ app.get('/api/live/:id', (req, res) => {
     });
 })
 
+// go through participants array, each has a summonerId
+// get past 20 matches, access matches array and go through gameId's
+// /lol/match/v3/matchlists/by-account/{accountId}/recent
+
+// get match info by matchId
+// /lol/match/v3/matches/{matchId}
+
 // React Router redirect
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/index.html'));
