@@ -24413,12 +24413,6 @@ var GameInfo = function (_React$Component) {
                     gameType,
                     ' '
                 ),
-                _react2.default.createElement(
-                    'p',
-                    null,
-                    'Time passed: ',
-                    ' '
-                ),
                 _react2.default.createElement(_TeamList2.default, { side: 'BLUE', participants: blueSide, username: this.username }),
                 _react2.default.createElement('hr', null),
                 _react2.default.createElement(_TeamList2.default, { side: 'RED', participants: redSide, username: this.username })
@@ -24509,7 +24503,7 @@ var TeamList = function (_React$Component) {
                     this.side
                 ),
                 this.participants.map(function (player) {
-                    return _react2.default.createElement(_PlayerInfo2.default, { name: player.summonerName, isSelf: player.summonerName == _this2.username });
+                    return _react2.default.createElement(_PlayerInfo2.default, { key: player.summonerName, name: player.summonerName, isSelf: player.summonerName == _this2.username });
                 })
             );
         }
