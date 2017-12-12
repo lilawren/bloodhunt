@@ -24387,6 +24387,9 @@ var GameInfo = function (_React$Component) {
                 return player.teamId == SIDES.RED;
             });
 
+            var mode = this.state.gameData.gameMode;
+            var gameType = this.state.gameData.gameType;
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -24395,6 +24398,26 @@ var GameInfo = function (_React$Component) {
                     null,
                     'Game data for ',
                     this.username
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Game Mode: ',
+                    mode,
+                    ' '
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Game Type: ',
+                    gameType,
+                    ' '
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Time passed: ',
+                    ' '
                 ),
                 _react2.default.createElement(_TeamList2.default, { side: 'BLUE', participants: blueSide, username: this.username }),
                 _react2.default.createElement('hr', null),

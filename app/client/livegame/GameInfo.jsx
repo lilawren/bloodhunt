@@ -29,9 +29,16 @@ class GameInfo extends React.Component {
         let blueSide = participants.filter(player => player.teamId == SIDES.BLUE);
         let redSide = participants.filter(player => player.teamId == SIDES.RED);
 
+        let mode = this.state.gameData.gameMode;
+        let gameType = this.state.gameData.gameType;
+        let secondsPassed = this.state.gameData.gameLength;
+
         return (
             <div>
                 <h1>Game data for {this.username}</h1>
+                <p>Game Mode: {mode} </p>
+                <p>Game Type: {gameType} </p>
+                <p>Time passed: {gameLength} </p>
                 <TeamList side={'BLUE'} participants={blueSide} username={this.username} />
                 <hr/>
                 <TeamList side={'RED'} participants={redSide} username={this.username} />

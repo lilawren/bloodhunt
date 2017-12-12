@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+var request = require('request');
 var express = require('express')
 var path = require('path')
 var utils = require('./utils.js');
@@ -24,7 +25,15 @@ app.get('/api/user/:name', (req, res) => {
         return;
     }
     var apiReq = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + name + '?api_key=' + RIOT_API_KEY;
-    utils.handleAPIRequest(apiReq, res);
+    request(apiReq, function (error, response, body) {
+        if (error) {
+            console.log('error:', error);
+            res.end();
+            return;
+        }
+        console.log('statusCode:', response && response.statusCode);
+        res.json(JSON.parse(body));
+    });
 })
 
 // game info
@@ -35,7 +44,15 @@ app.get('/api/live/:id', (req, res) => {
         return;
     }
     var apiReq = 'https://na1.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' + id + '?api_key=' + RIOT_API_KEY;
-    utils.handleAPIRequest(apiReq, res);
+    request(apiReq, function (error, response, body) {
+        if (error) {
+            console.log('error:', error);
+            res.end();
+            return;
+        }
+        console.log('statusCode:', response && response.statusCode);
+        res.json(JSON.parse(body));
+    });
 })
 
 // React Router redirect
