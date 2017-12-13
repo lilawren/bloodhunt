@@ -2839,8 +2839,8 @@ var App = function (_React$Component) {
                     ),
                     _react2.default.createElement('hr', null),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/user/:name', component: _UserInfo2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/live/:name', component: _GameInfo2.default })
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/user/:summonerName', component: _UserInfo2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/live/:summonerName', component: _GameInfo2.default })
                 )
             );
         }
@@ -24307,8 +24307,8 @@ var UserInfo = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            var name = this.props.match.params.name;
-            fetch('/api/user/' + name).then(function (res) {
+            var summonerName = this.props.match.params.summonerName;
+            fetch('/api/user/' + summonerName).then(function (res) {
                 return res.json();
             }).then(function (resJson) {
                 _this2.setState({ userData: resJson });
@@ -24374,7 +24374,7 @@ var GameInfo = function (_React$Component) {
                 return _react2.default.createElement(
                     'h1',
                     null,
-                    this.username,
+                    this.summonerName,
                     ' is not in a game'
                 );
             }
@@ -24397,7 +24397,7 @@ var GameInfo = function (_React$Component) {
                     'h1',
                     null,
                     'Game data for ',
-                    this.username
+                    this.summonerName
                 ),
                 _react2.default.createElement(
                     'p',
@@ -24413,9 +24413,9 @@ var GameInfo = function (_React$Component) {
                     gameType,
                     ' '
                 ),
-                _react2.default.createElement(_TeamList2.default, { side: 'BLUE', participants: blueSide, username: this.username }),
+                _react2.default.createElement(_TeamList2.default, { side: 'BLUE', participants: blueSide, username: this.summonerName }),
                 _react2.default.createElement('hr', null),
-                _react2.default.createElement(_TeamList2.default, { side: 'RED', participants: redSide, username: this.username })
+                _react2.default.createElement(_TeamList2.default, { side: 'RED', participants: redSide, username: this.summonerName })
             );
         }
     }, {
@@ -24423,21 +24423,76 @@ var GameInfo = function (_React$Component) {
         value: async function componentDidMount() {
             var _this2 = this;
 
-            var name = this.props.match.params.name;
-            var summonerInfo = await fetch('/api/user/' + name).then(function (res) {
+            var summonerInfo = await fetch('/api/user/' + this.summonerName).then(function (res) {
                 return res.json();
             });
+            var summonerIds = [summonerInfo.accountId];
 
-            fetch('/api/live/' + summonerInfo.id).then(function (res) {
+            // get info about the game
+            await fetch('/api/live/' + summonerInfo.id).then(function (res) {
                 return res.json();
             }).then(function (resJson) {
                 _this2.setState({ gameData: resJson });
             });
+
+            if (!this.state.gameData.participants) {
+                return;
+            }
+
+            var summonerNames = this.state.gameData.participants.map(function (participant) {
+                return participant.summonerName;
+            });
+
+            // get accountIds for each of the summoners
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = summonerNames[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var summonerName = _step.value;
+
+                    if (summonerName.toLowerCase() == this.summonerName.toLowerCase()) {
+                        continue;
+                    }
+                    var _summonerInfo = await fetch('/api/user/' + summonerName).then(function (res) {
+                        return res.json();
+                    });
+                    summonerIds.push(_summonerInfo.accountId);
+                }
+
+                // get past 20 games for each summoner, store in a hash table by summonerId -> matchlist
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            var recentMatchlists = {};
+            for (var i = 0; i < summonerIds.length; i++) {
+                var summonerId = summonerIds[i];
+                var matchlist = await fetch('/api/matchlists/' + summonerId).then(function (res) {
+                    return res.json();
+                });
+
+                recentMatchlists[summonerIds[i]] = matchlist;
+            }
+
+            // go through each matchlist and determine which were won and with which champions
         }
     }, {
-        key: 'username',
+        key: 'summonerName',
         get: function get() {
-            return this.props.match.params.name;
+            return this.props.match.params.summonerName;
         }
     }, {
         key: 'userIsInGame',

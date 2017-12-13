@@ -29,8 +29,8 @@ class UserInfo extends React.Component {
     }
 
     componentDidMount() {
-        let name = this.props.match.params.name;
-        fetch('/api/user/' + name).then((res) => res.json()).then((resJson) => {
+        let summonerName = this.props.match.params.summonerName;
+        fetch('/api/user/' + summonerName).then((res) => res.json()).then((resJson) => {
             this.setState({userData: resJson})
         });
     }

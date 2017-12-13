@@ -17,14 +17,14 @@ app.use(express.static(DIST_DIR));
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
 // RIOT api
-// user info
-app.get('/api/user/:name', (req, res) => {
-    const name = utils.getParam(req, 'name');
-    if (!name) {
+// get user info using a summonerName
+app.get('/api/user/:summonerName', (req, res) => {
+    const summonerName = utils.getParam(req, 'summonerName');
+    if (!summonerName) {
         res.end();
         return;
     }
-    var apiReq = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + name + '?api_key=' + RIOT_API_KEY;
+    var apiReq = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + summonerName + '?api_key=' + RIOT_API_KEY;
     request(apiReq, function (error, response, body) {
         if (error) {
             console.log('error:', error);
@@ -36,14 +36,14 @@ app.get('/api/user/:name', (req, res) => {
     });
 })
 
-// game info
-app.get('/api/live/:id', (req, res) => {
-    const id = utils.getParam(req, 'id');
-    if (!id) {
+// get live game info using a summonerId
+app.get('/api/live/:summonerId', (req, res) => {
+    const summonerId = utils.getParam(req, 'summonerId');
+    if (!summonerId) {
         res.end();
         return;
     }
-    var apiReq = 'https://na1.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' + id + '?api_key=' + RIOT_API_KEY;
+    var apiReq = 'https://na1.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' + summonerId + '?api_key=' + RIOT_API_KEY;
     request(apiReq, function (error, response, body) {
         if (error) {
             console.log('error:', error);
@@ -55,11 +55,26 @@ app.get('/api/live/:id', (req, res) => {
     });
 })
 
-// go through participants array, each has a summonerId
-// get past 20 matches, access matches array and go through gameId's
-// /lol/match/v3/matchlists/by-account/{accountId}/recent
+// get past 20 matches, access matches array and go through each gameId in the array
+app.get('/api/matchlists/:accountId', (req, res) => {
+    const accountId = utils.getParam(req, 'accountId');
+    if (!accountId) {
+        res.end();
+        return;
+    }
+    var apiReq = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + accountId + '/recent?api_key=' + RIOT_API_KEY;
+    request(apiReq, function (error, response, body) {
+        if (error) {
+            console.log('error:', error);
+            res.end();
+            return;
+        }
+        console.log('statusCode:', response && response.statusCode);
+        res.json(JSON.parse(body));
+    });
+})
 
-// get match info by matchId
+// TODO: get match info by matchId (gameId)
 // /lol/match/v3/matches/{matchId}
 
 // React Router redirect
